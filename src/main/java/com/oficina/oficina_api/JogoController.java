@@ -112,6 +112,13 @@ public class JogoController {
         return Map.of("ranking", ranking);
     }
 
+    // Endpoint auxiliar de teste: limpa o estado em memória sem reiniciar o servidor.
+    @GetMapping("/respostas/limpar")
+    public synchronized Map<String, Boolean> limparRespostas() {
+        participantes.clear();
+        return Map.of("ok", true);
+    }
+
     @PostMapping("/respostas")
     public synchronized ResponseEntity<?> responder(@RequestBody(required = false) RespostaRequest request) {
         if (request == null || request.jogador() == null || request.perguntaId() == null || request.alternativaId() == null) {
