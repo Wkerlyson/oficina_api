@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Desafio TI — Ranking Geral</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0b11;
+            --surface: #13131b;
+            --surface-2: #171722;
+            --surface-3: #22222f;
+            --border: #2b2b3b;
+            --border-strong: #303040;
+            --text: #fafafa;
+            --muted: #a1a1aa;
+            --muted-2: #c0c0d1;
+            --accent: #f97316;
+            --accent-light: #fed7aa;
+            --accent-dark: #431407;
+            --accent-alt: #c2410c;
+            --success: #04d361;
+            --warning: #fba94c;
+            --error: #f75a68;
+            --font-heading: "Space Grotesk", "Segoe UI", Arial, sans-serif;
+            --font-body: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        body {
+            position: relative;
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                    radial-gradient(circle at 50% 0%, rgba(249, 115, 22, 0.30), transparent 46%),
+                    radial-gradient(circle, rgba(255, 255, 255, 0.13) 0.7px, transparent 0.9px);
+            background-size: auto, 4px 4px;
+            opacity: 0.55;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(26, 26, 36, 0.92);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(12px);
+        }
+
+        .navbar-conteudo {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .marca {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .marca-icone {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            color: #ffffff;
+            box-shadow: 0 0 24px rgba(249, 115, 22, 0.35);
+        }
+
+        .marca-icone svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .marca-nome {
+            font-family: var(--font-heading);
+            font-size: 1.02rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .marca-nome strong {
+            color: var(--accent-light);
+        }
+
+        .chip-vivo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 36px;
+            padding: 0 12px;
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            background: var(--surface-2);
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted-2);
+        }
+
+        .ponto-vivo {
+            width: 6px;
+            height: 6px;
+            border-radius: 2px;
+            background: var(--success);
+            box-shadow: 0 0 10px rgba(4, 211, 97, 0.8);
+        }
+
+        .pagina {
+            position: relative;
+            z-index: 1;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 64px 24px 48px;
+        }
+
+        .hero {
+            padding-bottom: 36px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-family: var(--font-heading);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-marca {
+            width: 6px;
+            height: 6px;
+            border-radius: 1px;
+            background: var(--accent-light);
+        }
+
+        .underscore {
+            color: var(--accent);
+        }
+
+        h1 {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: clamp(2.6rem, 6vw, 4.4rem);
+            font-weight: 500;
+            line-height: 1.02;
+            letter-spacing: -0.035em;
+            text-wrap: balance;
+        }
+
+        .titulo-destaque {
+            background: linear-gradient(100deg, var(--accent-light) 0%, var(--accent) 78%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-texto {
+            max-width: 640px;
+            margin: 22px 0 0;
+            color: var(--muted);
+            font-size: 1.02rem;
+            line-height: 1.7;
+        }
+
+        .painel {
+            margin-top: 36px;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+        }
+
+        .painel-topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 26px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
+        }
+
+        .painel-topo h2 {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .atualizacao {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-heading);
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .atualizacao-ponto {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.9);
+        }
+
+        .tabela-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 720px;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        th {
+            padding: 14px 22px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            font-family: var(--font-heading);
+            font-size: 0.74rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 20px 22px;
+            border-top: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tbody tr:first-child td {
+            border-top: none;
+        }
+
+        .posicao {
+            width: 104px;
+        }
+
+        th.numero,
+        td.numero {
+            text-align: center;
+        }
+
+        .posicao-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 8px;
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            background: var(--surface-3);
+            color: var(--muted-2);
+            font-family: var(--font-heading);
+            font-size: 0.92rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .celula-jogador {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            flex: none;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-strong);
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: var(--surface-3);
+            color: var(--accent-light);
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .jogador-nome {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        td.numero {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pontos-sufixo {
+            margin-left: 4px;
+            font-family: var(--font-body);
+            font-size: 0.64rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .chip-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .ponto-status {
+            width: 6px;
+            height: 6px;
+            border-radius: 1px;
+            background: currentColor;
+        }
+
+        .chip-concluido {
+            color: var(--success);
+            background: rgba(4, 211, 97, 0.08);
+            border-color: rgba(4, 211, 97, 0.22);
+        }
+
+        .chip-andamento {
+            color: var(--warning);
+            background: rgba(251, 169, 76, 0.08);
+            border-color: rgba(251, 169, 76, 0.22);
+        }
+
+        .top-1 {
+            background: linear-gradient(90deg, rgba(249, 115, 22, 0.18), rgba(249, 115, 22, 0.02) 58%, transparent);
+        }
+
+        .top-2 {
+            background: linear-gradient(90deg, rgba(254, 215, 170, 0.09), transparent 58%);
+        }
+
+        .top-3 {
+            background: linear-gradient(90deg, rgba(194, 65, 12, 0.22), transparent 58%);
+        }
+
+        .top-1 td.posicao {
+            box-shadow: inset 3px 0 0 var(--accent);
+        }
+
+        .top-2 td.posicao {
+            box-shadow: inset 3px 0 0 var(--accent-light);
+        }
+
+        .top-3 td.posicao {
+            box-shadow: inset 3px 0 0 var(--accent-alt);
+        }
+
+        .top-1 .posicao-badge {
+            background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+            border-color: rgba(254, 215, 170, 0.5);
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .top-2 .posicao-badge {
+            background: var(--accent-light);
+            border-color: #ffffff;
+            color: var(--accent-dark);
+        }
+
+        .top-3 .posicao-badge {
+            background: rgba(194, 65, 12, 0.5);
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        .top-1 .avatar {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.95), rgba(194, 65, 12, 0.95));
+            border-color: rgba(254, 215, 170, 0.35);
+            color: #ffffff;
+        }
+
+        .top-2 .avatar {
+            background: rgba(254, 215, 170, 0.16);
+            border-color: rgba(254, 215, 170, 0.3);
+        }
+
+        .top-3 .avatar {
+            background: rgba(194, 65, 12, 0.35);
+            border-color: rgba(249, 115, 22, 0.4);
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        tbody tr.top-1:hover {
+            background: linear-gradient(90deg, rgba(249, 115, 22, 0.24), rgba(249, 115, 22, 0.04) 58%, transparent);
+        }
+
+        .vazio-td {
+            padding: 0;
+        }
+
+        .vazio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 64px 24px;
+            text-align: center;
+        }
+
+        .vazio-icone {
+            width: 56px;
+            height: 56px;
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--accent-light);
+        }
+
+        .vazio-icone svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .vazio h3 {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .vazio p {
+            margin: 0;
+            max-width: 430px;
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .mensagem {
+            margin: 18px 0 0;
+            padding: 14px 16px;
+            border: 1px solid rgba(247, 90, 104, 0.3);
+            border-radius: 10px;
+            background: rgba(247, 90, 104, 0.08);
+            color: var(--error);
+            font-size: 0.9rem;
+        }
+
+        .rodape {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.78rem;
+        }
+
+        .rodape strong {
+            color: var(--accent-light);
+            font-family: var(--font-heading);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 720px) {
+            .navbar-conteudo {
+                padding: 0 16px;
+            }
+
+            .pagina {
+                padding: 40px 16px;
+            }
+
+            h1 {
+                font-size: clamp(2.2rem, 10vw, 3.2rem);
+            }
+
+            .painel-topo {
+                padding: 18px;
+            }
+
+            th,
+            td {
+                padding: 14px 16px;
+            }
+
+            .rodape {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="navbar">
+    <div class="navbar-conteudo">
+        <a class="marca" href="/ranking" aria-label="Desafio TI — Ranking Geral">
+            <span class="marca-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                </svg>
+            </span>
+            <span class="marca-nome">Desafio <strong>TI</strong></span>
+        </a>
+
+        <span class="chip-vivo">
+            <span class="ponto-vivo" aria-hidden="true"></span>
+            Ao vivo
+        </span>
+    </div>
+</header>
+
+<main class="pagina">
+    <section class="hero">
+        <p class="eyebrow">
+            <span class="eyebrow-marca" aria-hidden="true"></span>
+            Competição em tempo real<span class="underscore">_</span>
+        </p>
+        <h1>Desafio TI —<br><span class="titulo-destaque"> Ranking Geral</span></h1>
+        <p class="hero-texto">
+            A classificação é calculada pelo servidor a cada resposta.
+            Esta página consulta o ranking automaticamente a cada 3 segundos.
+        </p>
+    </section>
+
+    <section class="painel" aria-labelledby="titulo-classificacao">
+        <div class="painel-topo">
+            <h2 id="titulo-classificacao">Classificação</h2>
+            <span class="atualizacao">
+                <span class="atualizacao-ponto" aria-hidden="true"></span>
+                Atualiza a cada 3s
+            </span>
+        </div>
+
+        <div class="tabela-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th class="posicao">Posição</th>
+                    <th>Apelido</th>
+                    <th class="numero">Pontuação</th>
+                    <th class="numero">Acertos</th>
+                    <th>Conclusão</th>
+                </tr>
+                </thead>
+                <tbody id="corpo-ranking">
+                <tr>
+                    <td class="vazio-td" colspan="5">
+                        <div class="vazio">
+                            <p>Carregando ranking...</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <p id="mensagem" class="mensagem" hidden></p>
+
+    <footer class="rodape">
+        <strong>Desafio TI</strong>
+        <span>Ranking atualizado automaticamente a cada 3 segundos.</span>
+    </footer>
+</main>
+
+<script>
+    const corpoRanking = document.getElementById('corpo-ranking');
+    const mensagem = document.getElementById('mensagem');
+
+    function criarCelula(classe) {
+        const celula = document.createElement('td');
+        if (classe) {
+            celula.className = classe;
+        }
+        return celula;
+    }
+
+    function textoConclusao(item) {
+        if (!item.concluido) {
+            return 'Em andamento';
+        }
+        if (item.tempoConclusaoMs === null || item.tempoConclusaoMs === undefined) {
+            return 'Concluído';
+        }
+        const segundos = (item.tempoConclusaoMs / 1000).toFixed(1).replace('.', ',');
+        return `Concluído · ${segundos} s`;
+    }
+
+    function mostrarVazio() {
+        corpoRanking.innerHTML = '';
+
+        const linha = document.createElement('tr');
+        const celula = criarCelula('vazio-td');
+        celula.colSpan = 5;
+        celula.innerHTML = `
+            <div class="vazio">
+                <span class="vazio-icone" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                        <path d="M4 22h16"/>
+                        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+                    </svg>
+                </span>
+                <h3>Nenhum participante respondeu ainda.</h3>
+                <p>A classificação aparece aqui assim que as primeiras respostas forem enviadas.</p>
+            </div>`;
+        linha.appendChild(celula);
+        corpoRanking.appendChild(linha);
+    }
+
+    function criarCelulaJogador(nome) {
+        const celula = criarCelula('jogador');
+
+        const conteudo = document.createElement('div');
+        conteudo.className = 'celula-jogador';
+
+        const avatar = document.createElement('span');
+        avatar.className = 'avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        avatar.textContent = nome.trim().charAt(0).toUpperCase();
+
+        const nomeSpan = document.createElement('span');
+        nomeSpan.className = 'jogador-nome';
+        nomeSpan.textContent = nome;
+
+        conteudo.appendChild(avatar);
+        conteudo.appendChild(nomeSpan);
+        celula.appendChild(conteudo);
+        return celula;
+    }
+
+    function criarCelulaPontuacao(pontos) {
+        const celula = criarCelula('numero');
+        celula.appendChild(document.createTextNode(String(pontos)));
+
+        const sufixo = document.createElement('span');
+        sufixo.className = 'pontos-sufixo';
+        sufixo.textContent = 'pts';
+        celula.appendChild(sufixo);
+        return celula;
+    }
+
+    function criarCelulaAcertos(acertos) {
+        const celula = criarCelula('numero');
+        celula.textContent = String(acertos);
+        return celula;
+    }
+
+    function criarCelulaStatus(item) {
+        const celula = criarCelula();
+
+        const chip = document.createElement('span');
+        chip.className = 'chip-status ' + (item.concluido ? 'chip-concluido' : 'chip-andamento');
+
+        const ponto = document.createElement('span');
+        ponto.className = 'ponto-status';
+        ponto.setAttribute('aria-hidden', 'true');
+
+        chip.appendChild(ponto);
+        chip.appendChild(document.createTextNode(textoConclusao(item)));
+        celula.appendChild(chip);
+        return celula;
+    }
+
+    function mostrarRanking(itens) {
+        corpoRanking.innerHTML = '';
+
+        if (!itens || itens.length === 0) {
+            mostrarVazio();
+            return;
+        }
+
+        for (const item of itens) {
+            const linha = document.createElement('tr');
+            if (item.posicao <= 3) {
+                linha.className = `top top-${item.posicao}`;
+            }
+
+            const celulaPosicao = criarCelula('posicao');
+            const badgePosicao = document.createElement('span');
+            badgePosicao.className = 'posicao-badge';
+            badgePosicao.textContent = `${item.posicao}º`;
+            celulaPosicao.appendChild(badgePosicao);
+
+            linha.appendChild(celulaPosicao);
+            linha.appendChild(criarCelulaJogador(item.jogador));
+            linha.appendChild(criarCelulaPontuacao(item.pontuacao));
+            linha.appendChild(criarCelulaAcertos(item.acertos));
+            linha.appendChild(criarCelulaStatus(item));
+            corpoRanking.appendChild(linha);
+        }
+    }
+
+    async function carregarRanking() {
+        try {
+            const resposta = await fetch('/api/ranking', { cache: 'no-store' });
+            if (!resposta.ok) {
+                throw new Error(`HTTP ${resposta.status}`);
+            }
+            const dados = await resposta.json();
+            mostrarRanking(dados.ranking);
+            mensagem.hidden = true;
+        } catch (erro) {
+            mensagem.textContent = 'Não foi possível atualizar o ranking. A próxima tentativa acontece em 3 segundos.';
+            mensagem.hidden = false;
+        }
+    }
+
+    carregarRanking();
+    setInterval(carregarRanking, 3000);
+</script>
+</body>
+</html>
